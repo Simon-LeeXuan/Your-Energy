@@ -19,14 +19,14 @@ const Login = () => {
   const handleChange = useCallback((captcha) => {
     setCaptcha(captcha)
   }, []);
-  
+
   const onSubmit = async () => {
     if (!username) {
-      Toast.show('请输入账号')
+      Toast.show('Please enter Telephone number')
       return
     }
     if (!password) {
-      Toast.show('请输入密码')
+      Toast.show('Please enter the password')
       return
     }
     try {
@@ -39,18 +39,18 @@ const Login = () => {
         window.location.href = '/';
       } else {
         if (!verify) {
-          Toast.show('请输入验证码')
+          Toast.show('Please enter verification code')
           return
         };
         if (verify != captcha) {
-          Toast.show('验证码错误')
+          Toast.show('Verification code error')
           return
         };
         const { data } = await post('/api/user/register', {
           username,
           password
         });
-        Toast.show('注册成功');
+        Toast.show('Registration success');
          setType('login');
       }
     } catch (err) {
@@ -59,20 +59,20 @@ const Login = () => {
   };
 
   useEffect(() => {
-    document.title = type == 'login' ? '登录' : '注册';
+    document.title = type == 'login' ? 'Login' : 'Sign Up';
   }, [type])
   return <div className={s.auth}>
     <div className={s.head} />
     <div className={s.tab}>
-      <span className={cx({ [s.avtive]: type == 'login' })} onClick={() => setType('login')}>登录</span>
-      <span className={cx({ [s.avtive]: type == 'register' })} onClick={() => setType('register')}>注册</span>
+      <span className={cx({ [s.avtive]: type == 'login' })} onClick={() => setType('login')}>Login</span>
+      <span className={cx({ [s.avtive]: type == 'register' })} onClick={() => setType('register')}>Sign Up</span>
     </div>
     <div className={s.form}>
       <Cell icon={<CustomIcon type="zhanghao" />}>
         <Input
           clearable
           type="text"
-          placeholder="请输入账号"
+          placeholder="Telephone number"
           onChange={(value) => setUsername(value)}
         />
       </Cell>
@@ -80,7 +80,7 @@ const Login = () => {
         <Input
           clearable
           type="password"
-          placeholder="请输入密码"
+          placeholder="Password"
           onChange={(value) => setPassword(value)}
         />
       </Cell>
@@ -89,7 +89,7 @@ const Login = () => {
           <Input
             clearable
             type="text"
-            placeholder="请输入验证码"
+            placeholder="Verification code"
             onChange={(value) => setVerify(value)}
           />
           <Captcha ref={captchaRef} charNum={4} onChange={handleChange} />
@@ -100,10 +100,10 @@ const Login = () => {
       {
         type == 'register' ? <div className={s.agree}>
           <Checkbox />
-          <label className="text-light">阅读并同意<a>《掘掘手札条款》</a></label>
+          <label className="text-light">Agree to use <i>Energy Bill</i></label>
         </div> : null
       }
-      <Button onClick={onSubmit} block theme="primary">{type == 'login' ? '登录' : '注册'}</Button>
+      <Button onClick={onSubmit} block theme="primary">{type == 'login' ? 'Login' : 'Sign Up'}</Button>
     </div>
   </div>
 };
